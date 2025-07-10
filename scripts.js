@@ -1,56 +1,71 @@
+const buttons = document.querySelectorAll(".select-btn");
+const selectedList = document.getElementById("selected-list");
+buttons.forEach((button) => {
+  button.addEventListener("click", () => {
+     const playerName = button.parentElement.previousElementSibling.textContent.trim();
 
-let AlexOvechkin = {
-    name: "Alex Ovechkin",
-    imgUrl: "img/hockeypl1.jpeg"
-    btnid: "alex"
-};
+     if (selectedList.children.length >= 5) {
+      alert("You can only select 5 players!");
+      return;
+    }
+    const li = document.createElement("li");
+    li.innerText = playerName;
+    selectedList.appendChild(li);
+    button.disabled = true;
+    button.classList.add("bg-gray-400");
+  });
+});
 
-let AustonMathews = {
-    name: "Auston Mathews",
-    imgUrl: "img/hockeypl2.jpeg"
-    btnid: "auston"
-};
 
-let Staneley = {
-    name: "Staneley",
-    imgUrl: "img/hockeypl3.png"
-    btnid: "staneley"
-};
+const calculateBtn = document.querySelector("button.bg-orange-500");
+const playerCostInput = document.querySelector('input[name="p-cost"]');
+const expensesText = document.querySelector("p span");  
 
-let SideneyCrosby = {
-    name: "Sideney Crosby",
-    imgUrl: "img/hockeypl4.jpeg"
-    btnid: "sideney"
-};
+calculateBtn.addEventListener("click", () => {
+  const playerCount = selectedList.children.length;
+  const perPlayerCost = parseFloat(playerCostInput.value);
+   if (isNaN(perPlayerCost)) {
+    alert("Enter a valid per player cost");
+    return;
+  }
 
-let ConnorMcDavid = {
-    name: "Connor McDavid",
-    imgUrl: "img/hockeypl5.jpg"
-    btnid: "connor"
-};
+  const total = playerCount * perPlayerCost;
+  expensesText.textContent = `$${total}`;
+});
 
-let VictorHedman = {
-    name: "Victor Hedman",
-    imgUrl: "img/hockeypl6.webp"
-    btnid: "victor"
-};
+const totalCalcBtn = document.querySelectorAll("button.bg-orange-500")[1];
 
-let Patrik = {
-    name: "Patrik",
-    imgUrl: "img/hockeypl7.jpg"
-    btnid: "patrik"
-};
+totalCalcBtn.addEventListener("click", () => {
+  const playerExpenseText = document.querySelector("p span"); // Player Expenses
+  const playerExpense = parseFloat(playerExpenseText.textContent.replace("$", "")) || 0;
 
-let NikitaKucherov = {
-    name: "Nikita Kucherov",
-    imgUrl: "img/hockeypl8.png"
-    btnid: "nikita"
-};
+  const managerInput = document.querySelector('input[name="m-cost"]');
+  const coachInput = document.querySelector('input[name="c-cost"]');
 
-let MarioLemieux = {
-    name: "Mario Lemieux",
-    imgUrl: "img/hockeypl9.webp"
-    btnid: "mario"
-};
+  const managerCost = parseFloat(managerInput.value) || 0;
+  const coachCost = parseFloat(coachInput.value) || 0;
+
+  const total = playerExpense + managerCost + coachCost;
+
+  const totalOutput = document.querySelector("p span.font-bold.text-orange-400");
+  totalOutput.textContent = `$${total}`;
+});
+
+const resetBtn = document.getElementById("reset-btn");
+
+resetBtn.addEventListener("click", () => {
+  selectedList.innerHTML = "";
+  playerCostInput.value = "";
+  managerInput.value = "";
+  coachInput.value = "";
+  playerExpenseText.textContent = "$00";
+  totalOutput.textContent = "$00";
+
+  buttons.forEach(btn => {
+    btn.disabled = false;
+    btn.classList.remove("bg-gray-400");
+    btn.textContent = "Select";
+  });
+});
 
 
